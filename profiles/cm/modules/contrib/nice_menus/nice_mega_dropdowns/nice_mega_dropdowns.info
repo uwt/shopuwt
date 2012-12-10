@@ -1,0 +1,7 @@
+name = Nice Mega Dropdowns
+description = Use nodes as dropdown menus.
+dependencies[] = nice_menus
+core = 7.x
+files[] = nice_mega_dropdowns.install
+files[] = nice_mega_dropdowns.module
+
