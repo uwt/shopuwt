@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * @file
+ * adds a formatter for Address Field fields that creates a link to maps.google.com
+ */
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function gmaplink_field_formatter_info () {
+  return array(
+      'gmaplink_formatter' => array(
+        'label' => t('Google Map Link'),
+        'field types' => array('addressfield'),
+        'settings' => array(
+          'link_text' => 'Go to map',
+          ),
+        ),
+      );
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function gmaplink_field_formatter_settings_form ($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $element = array();
+  $element['link_text'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Link text'),
+      '#description' => t('This will be the text that the user clicks on to go to the Google map.'),
+      '#default_value' => $settings['link_text'],
+      );
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_setttings_summary().
+ */
+function gmaplink_field_formatter_settings_summary ($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $summary = t("Render Google map link with link text '@link_text'", array(
+        '@link_text' => $settings['link_text'],
+        ));
+  return $summary;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function gmaplink_field_formatter_view ($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  $settings = $display['settings'];
+  $link_text = $settings['link_text'];
+
+  foreach ($items as $delta => $item) {
+    $addr_parts[] = $item['thoroughfare'];
+    $addr_parts[] = $item['locality'];
+    $addr_parts[] = $item['administrative_area'];
+    $addr_parts[] = $item['postal_code'];
+  }
+  $addr = implode(' ', $addr_parts);
+  $options = array(
+      'html' => FALSE,
+      );
+  $link = l($link_text, "http://maps.google.com/maps?q=" . urlencode($addr));
+  $element[0]['#markup'] = $link;
+  return $element;
+
+}

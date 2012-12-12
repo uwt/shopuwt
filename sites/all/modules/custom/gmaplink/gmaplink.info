@@ -1,0 +1,6 @@
+name = Google Map Link Formatter
+description =  Formats an Address Field link as a link to a google map at maps.google.com
+package = Fields
+core = 7.x
+files[] = gmaplink.module
+dependencies[] = addressfield
