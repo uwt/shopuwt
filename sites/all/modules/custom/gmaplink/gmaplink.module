@@ -14,7 +14,9 @@ function gmaplink_field_formatter_info () {
         'label' => t('Google Map Link'),
         'field types' => array('addressfield'),
         'settings' => array(
-          'link_text' => 'Go to map',
+          'display_type' => array('text'),
+          'link_text' => array('Go to map'),
+          'addr_parts_display' => array('thoroughfare'),
           ),
         ),
       );
@@ -27,11 +29,34 @@ function gmaplink_field_formatter_settings_form ($field, $instance, $view_mode, 
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
   $element = array();
+  $element['display_type'] = array(
+      '#type' => 'radios',
+      '#title' => t('Display type'),
+      '#description' => t("Select 'Custom text' and enter text into the 'Link text' field, or select 'Address parts' and select the address parts to display."),
+      '#default_value' => $settings['display_type'],
+      '#required' => TRUE,
+      '#options' => array(
+        'text' => t('Custom text'),
+        'addr_parts' => t('Address parts'),
+        ),
+      );
   $element['link_text'] = array(
       '#type' => 'textfield',
       '#title' => t('Link text'),
       '#description' => t('This will be the text that the user clicks on to go to the Google map.'),
       '#default_value' => $settings['link_text'],
+      );
+  $element['addr_parts_display'] = array(
+      '#type' => 'checkboxes',
+      '#title' => t('Address parts to display'),
+      '#description' => t('Place a checkbox next to each address part to display'),
+      '#default_value' => $settings['addr_parts_display'],
+      '#options' => array(
+        'thoroughfare' => t('Street'),
+        'locality' => t('City'),
+        'administrative_area' => t('State'),
+        'postal_code' => t('Zip code'),
+        ),
       );
   return $element;
 }
@@ -42,7 +67,8 @@ function gmaplink_field_formatter_settings_form ($field, $instance, $view_mode, 
 function gmaplink_field_formatter_settings_summary ($field, $instance, $view_mode) {
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
-  $summary = t("Render Google map link with link text '@link_text'", array(
+  //$summary = t("Render Google map link with address parts: [puty addy parts here] ");
+  $summary = t("Render Google map link with link text '@link_text'.", array(
         '@link_text' => $settings['link_text'],
         ));
   return $summary;
@@ -57,12 +83,28 @@ function gmaplink_field_formatter_view ($entity_type, $entity, $field, $instance
   $link_text = $settings['link_text'];
 
   foreach ($items as $delta => $item) {
-    $addr_parts[] = $item['thoroughfare'];
-    $addr_parts[] = $item['locality'];
-    $addr_parts[] = $item['administrative_area'];
-    $addr_parts[] = $item['postal_code'];
+    $addr_parts['thoroughfare'] = $item['thoroughfare'];
+    $addr_parts['locality'] = $item['locality'];
+    $addr_parts['administrative_area'] = $item['administrative_area'];
+    $addr_parts['postal_code'] = $item['postal_code'];
   }
   $addr = implode(' ', $addr_parts);
+
+  if ($settings['display_type'] == 'addr_parts') {
+    foreach ($settings['addr_parts_display'] as $part) {
+      if ($part !== 0) {
+        $parts_display[$part] = $part;
+      }
+    }
+
+    foreach ($parts_display as $delta => $part) {
+      $parts_display_parts[$delta] = $addr_parts[$part];
+    }
+    $link_text = implode(' ', $parts_display_parts);
+  }
+
+
+
   $options = array(
       'html' => FALSE,
       );
