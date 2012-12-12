@@ -46,9 +46,8 @@ function cm_location_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
+          'type' => 'hidden',
           'weight' => '0',
         ),
         'teaser' => array(
@@ -82,11 +81,142 @@ function cm_location_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-location-field_location_category'
+  $fields['node-location-field_location_category'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_location_category',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'category',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'location',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '4',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_location_category',
+      'label' => 'Category',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '35',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-location-field_location_cost'
+  $fields['node-location-field_location_cost'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_location_cost',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          1 => '$ - Under $10',
+          2 => '$$ - $10-$16',
+          3 => '$$$ - $17 and up',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'location',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'This field is only for use on food/restaurant locations.',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '5',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_location_cost',
+      'label' => 'Cost',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '36',
+      ),
+    ),
+  );
+
   // Exported field: 'node-location-field_location_geo'
   $fields['node-location-field_location_geo'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_location_geo',
@@ -104,27 +234,8 @@ function cm_location_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'geofield_map',
-          'settings' => array(
-            'geofield_map_baselayers_hybrid' => 1,
-            'geofield_map_baselayers_map' => 1,
-            'geofield_map_baselayers_physical' => 0,
-            'geofield_map_baselayers_satellite' => 1,
-            'geofield_map_controltype' => 'default',
-            'geofield_map_draggable' => 1,
-            'geofield_map_height' => '300px',
-            'geofield_map_maptype' => 'map',
-            'geofield_map_mtc' => 'standard',
-            'geofield_map_overview' => 0,
-            'geofield_map_overview_opened' => 0,
-            'geofield_map_pancontrol' => 1,
-            'geofield_map_scale' => 0,
-            'geofield_map_scrollwheel' => 1,
-            'geofield_map_streetview_show' => 1,
-            'geofield_map_width' => '100%',
-            'geofield_map_zoom' => '12',
-          ),
-          'type' => 'geofield_map_map',
+          'settings' => array(),
+          'type' => 'hidden',
           'weight' => '2',
         ),
         'teaser' => array(
@@ -164,7 +275,7 @@ function cm_location_field_default_fields() {
   $fields['node-location-field_location_location'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_location_location',
@@ -182,8 +293,11 @@ function cm_location_field_default_fields() {
           'element_key' => 'node|location|field_location_location|und|0',
           'thoroughfare' => '',
           'premise' => '',
-          'locality' => '',
-          'country' => 'AF',
+          'locality' => 'Tacoma',
+          'administrative_area' => 'WA',
+          'postal_code' => '98402',
+          'country' => 'US',
+          'organisation_name' => '',
         ),
       ),
       'deleted' => '0',
@@ -191,14 +305,18 @@ function cm_location_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'addressfield',
+          'module' => 'gmaplink',
           'settings' => array(
-            'format_handlers' => array(
-              0 => 'address',
+            'addr_parts_display' => array(
+              'administrative_area' => 0,
+              'locality' => 0,
+              'postal_code' => 0,
+              'thoroughfare' => 'thoroughfare',
             ),
-            'use_widget_handlers' => 1,
+            'display_type' => 'addr_parts',
+            'link_text' => 'Go to map',
           ),
-          'type' => 'addressfield_default',
+          'type' => 'gmaplink_formatter',
           'weight' => '1',
         ),
         'teaser' => array(
@@ -219,7 +337,9 @@ function cm_location_field_default_fields() {
         'active' => 1,
         'module' => 'addressfield',
         'settings' => array(
-          'available_countries' => array(),
+          'available_countries' => array(
+            'US' => 'US',
+          ),
           'format_handlers' => array(
             'address' => 'address',
             'name-full' => 0,
@@ -233,11 +353,105 @@ function cm_location_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-location-field_location_logo'
+  $fields['node-location-field_location_logo'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_location_logo',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'image',
+      'settings' => array(
+        'default_image' => 0,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'image',
+    ),
+    'field_instance' => array(
+      'bundle' => 'location',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '3',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_location_logo',
+      'label' => 'Logo',
+      'required' => 0,
+      'settings' => array(
+        'alt_field' => 0,
+        'default_image' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '',
+        'max_resolution' => '',
+        'min_resolution' => '',
+        'title_field' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'media',
+        'settings' => array(
+          'allowed_schemes' => array(
+            'public' => 'public',
+          ),
+          'allowed_types' => array(
+            'audio' => 0,
+            'default' => 0,
+            'image' => 'image',
+            'video' => 0,
+          ),
+          'browser_plugins' => array(
+            'library' => 0,
+            'media_default--media_browser_1' => 0,
+            'media_default--media_browser_my_files' => 0,
+            'media_internet' => 0,
+            'upload' => 'upload',
+          ),
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'media_generic',
+        'weight' => '34',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Body');
+  t('Category');
+  t('Cost');
   t('Geofield');
   t('Location');
+  t('Logo');
+  t('This field is only for use on food/restaurant locations.');
 
   return $fields;
 }
