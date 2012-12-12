@@ -67,10 +67,14 @@ function gmaplink_field_formatter_settings_form ($field, $instance, $view_mode, 
 function gmaplink_field_formatter_settings_summary ($field, $instance, $view_mode) {
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
-  //$summary = t("Render Google map link with address parts: [puty addy parts here] ");
-  $summary = t("Render Google map link with link text '@link_text'.", array(
-        '@link_text' => $settings['link_text'],
-        ));
+  dpm($settings);
+  if ($settings['display_type'] == 'addr_parts') {
+    $summary = t("Render Google map link with address parts.");
+  } else {
+    $summary = t("Render Google map link with link text '@link_text'.", array(
+          '@link_text' => $settings['link_text'],
+          ));
+  }
   return $summary;
 }
 
