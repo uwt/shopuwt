@@ -444,6 +444,7 @@ settings[nice_menus_custom_css] = ''
 
 version = '1.x'
 
+scripts[] = js/mobilemenu.js
 
 ; Information added by drush on 2012-06-04
 version = "7.x-dev-dev"

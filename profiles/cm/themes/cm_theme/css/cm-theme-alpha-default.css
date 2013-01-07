@@ -70,3 +70,6 @@ body {
 #region-footer-first .menu a:visited {
   color:white;
 }
+body.front {
+  background:none;
+}
