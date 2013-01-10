@@ -11,12 +11,45 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.05em;
   font-family: Helvetica, Arial, sans-serif;
 }
+a,a:link,a:active,a:visited {
+  text-decoration:none;  
+}
 
+/* Tables */
+tr.odd td,
+tr.even td,
+tr.odd td.active,
+tr.even td.active,
+tr:hover td,
+tr:hover td.active,
+tr.odd:hover td,
+tr.even:hover td,
+tr.odd:hover td.active,
+tr.even:hover td.active{
+  background-color:white;
+}
+
+.view-id-location_listing thead {
+  display:none;  
+}
+.view-id-location_listing table,
+.view-id-location_listing td {
+  border:none;
+}
+.view-id-location_listing td {
+  padding-left:0;  
+}
+.view-id-location_listing tr {
+  border-top:1px solid black;
+  border-right:none;
+  border-bottom:none;
+  border-left:none;
+}
 
 /* Layout */
 
 body {
-  background: #eef2f6;
+  background: #fff;
 }
 
 #block-system-main-menu,
@@ -69,18 +102,16 @@ img {
   margin-top:2em;
 }
 
+#region-branding {
+  padding-top:15px;
+  padding-bottom:5px;
+}
 #zone-branding-wrapper {
-  background-color:#38254C;
+  background-color:#39275b;
   color:white;
-  zoom: 1;
-  filter: alpha(opacity=85);
-  opacity: 0.85;
 }
 #zone-menu-wrapper {
   background-color:#DBB300;
-  zoom: 1;
-  filter: alpha(opacity=85);
-  opacity: 0.85;
 }
 
 #mobile-menu-link {
