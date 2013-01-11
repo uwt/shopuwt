@@ -145,8 +145,8 @@ content: " - ";
   /*font-size:2.5em;*/
 }
 body.front {
-background:url("../images/HomePage7_03.jpg");
-background-repeat:no-repeat;
+/*background:url("../images/HomePage7_03.jpg");
+background-repeat:no-repeat;*/
 }
 
 body.not-front #zone-menu .menu li:not(#mobile-menu-link) {

@@ -29,9 +29,11 @@ body {
 
 
 body.front {
+ /* 
   background:url("../images/Homepage1.jpg");
+  z-index:0;
   background-repeat:no-repeat;
-  /*background-repeat:no-repeat;*/
+ */
 }
 
 
@@ -52,17 +54,10 @@ HTML, BODY {
     position: relative;
 }
 
-#section-content {
-  padding-bottom: 100px;
+.not-front #zone-content-wrapper {
+  padding-top:1em;
 }
 
-#section-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100px;
-  background-color:#39275B;
-}
 
 #region-branding .branding-data {
   width:400px;
@@ -135,7 +130,6 @@ height:1.5em;
   display:none;
 }
 .page-taxonomy-term .pane-content h1 {
-  margin-top:0.5em;
 }
 
 
@@ -201,3 +195,17 @@ html>/**/body .section-content {height: 100%;}
   color:white;
 }
 
+.view-id-term_slideshow img{
+  max-width:100%;
+  width:auto;
+  height:auto;
+}
+
+
+/*************************
+ *  Background Slideshow *
+ ************************/
+.bgstretcher-page,
+.bgstretcher-area{
+  height:100%;
+}
