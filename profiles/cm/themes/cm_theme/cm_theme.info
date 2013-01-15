@@ -447,6 +447,7 @@ settings[nice_menus_custom_css] = ''
 version = '1.x'
 
 scripts[] = js/mobilemenu.js
+scripts[] = js/html5shiv.js
 
 stylesheets-conditional[IE 8][all][] = css/ie8.css
 

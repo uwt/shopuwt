@@ -11,7 +11,8 @@
       // Only run this code once
       $('#region-menu ul.menu', context).once('MobileMenu', function () {
         // Define the toggling list item
-        var mobilemenumarkup = '<li id="mobile-menu-link" class="">Menu</li>';
+        var mobilemenumarkup = '<li>Menu</li>';
+        mobilemenumarkup.attr("id", "mobile-menu-link");
         // Add the toggling list item to the top of the menu
         $('#region-menu ul.menu').prepend(mobilemenumarkup);
         // Add the expanded/collapsed classes depending on front page or not

@@ -1,3 +1,35 @@
-html.js body.html div.bgstretcher-area div.bgstretcher-page div#page.page header#section-header.section div#zone-menu-wrapper.zone-wrapper {
-  background-color:lime;
+
+/**************************
+ * Un-mobilizing the menu *
+ *************************/
+body.not-front #zone-menu .menu li {
+  display:inline-block;
+}
+#zone-menu .menu ul:first-child {
+  display:none;
+}
+body #zone-menu .menu li {
+  display:inline-block;
+  border-bottom:0;
+  border-right:0;
+}
+
+#zone-menu-wrapper #zone-menu .menu li.first.leaf a{
+  padding-left:0;
+}
+#zone-menu-wrapper #zone-menu .menu li.last.leaf a{
+  border-right:0px;
+}
+
+
+#zone-menu .menu li a {
+  border-right:1px solid white;
+  padding-right:.5em;
+  padding-left:.5em;
+  margin-left:auto;
+  margin-right:auto;
+  text-transform:uppercase;
+  font-size:85%;
+  color:white;
+  background-color:#DBB300;
 }
