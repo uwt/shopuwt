@@ -1,7 +1,9 @@
 /* This file will hold styles for all layouts using the alpha grid (i.e. not the mobile layout). */
 
-body {
+html body{
   /* background: #eef2f6 url(../images/bg.jpg) no-repeat center top; */
+  font-size:1em;
+  line-height:1em;
 }
 
 #block-system-main-menu,
@@ -29,13 +31,11 @@ body {
 
 
 body.front {
- /* 
-  background:url("../images/Homepage1.jpg");
-  z-index:0;
-  background-repeat:no-repeat;
- */
 }
 
+h2 {
+  font-size:1em;
+}
 
 .front #zone-branding-wrapper{
   margin-top:3em;
@@ -60,16 +60,16 @@ HTML, BODY {
 
 
 #region-branding .branding-data {
-  width:400px;
+  width:350px;
   float:left;
 }
-#region-branding #block-delta-blocks-site-slogan {
+#region-branding #block-block-7 {
   width:300px;
   float:left;
   height:65px;
 }
 
-#region-branding #block-delta-blocks-site-slogan .content {
+#region-branding #block-block-7 .content {
 margin-top:20px;
 }
 
@@ -83,14 +83,14 @@ body.not-front #zone-menu .menu li:not(#mobile-menu-link) {
   display:none;
 }
 #zone-menu .menu {
-height:1.5em;
+  /*height:1.5em;*/
 }
 #zone-menu .menu li:not(#mobile-menu-link) {
   display:inline-block;
-  height:1.5em;
+  /*height:1.5em;*/
   border-bottom:none;
   border-right:0;
-  margin-top:.25em;
+  /*margin-top:.25em;*/
 }
 #zone-menu-wrapper #zone-menu .menu li.first.leaf a{
   padding-left:0;
@@ -126,9 +126,6 @@ height:1.5em;
 
 }
 
-.page-taxonomy-term #page-title {
-  display:none;
-}
 .page-taxonomy-term .pane-content h1 {
 }
 
@@ -147,10 +144,6 @@ html>/**/body .section-content {height: 100%;}
 *:first-child+html body .section-content {height: auto;}
 
 
-#zone-footer-wrapper {
-  background-color:#fff;
-  color:#39275B;
-}
 
 
 #block-nodeblock-cm-footer .block-title {
@@ -190,10 +183,6 @@ html>/**/body .section-content {height: 100%;}
   padding-top:1em;
 }
 
-#zone-postscript-wrapper {
-  background-color:#39275B;
-  color:white;
-}
 
 .view-id-term_slideshow img{
   max-width:100%;

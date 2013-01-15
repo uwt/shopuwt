@@ -449,7 +449,6 @@
 		_bgStretcherAction = false;
 	};	
 	$.fn.bgStretcher.effectFade = function(current, next){
-	  console.log($.fn.bgStretcher.settings);
     next.fadeIn( parseInt($.fn.bgStretcher.settings.slideShowSpeed ));
 		current.fadeOut( parseInt($.fn.bgStretcher.settings.slideShowSpeed), function(){
 			_bgStretcherAction = false;

@@ -9,3 +9,4 @@ sites/*/private
 *.tar
 *.tar.gz
 *.sql
+*.swp

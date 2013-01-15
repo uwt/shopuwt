@@ -448,6 +448,8 @@ version = '1.x'
 
 scripts[] = js/mobilemenu.js
 
+stylesheets-conditional[IE 8][all][] = css/ie8.css
+
 ; Information added by drush on 2012-06-04
 version = "7.x-dev-dev"
 core = "7.x"

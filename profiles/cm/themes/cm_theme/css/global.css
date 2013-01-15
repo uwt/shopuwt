@@ -4,7 +4,7 @@
 /* Fonts */
 
 body {
-  font: 1.5em Helvetica, Arial, sans-serif;
+  font: 150% Helvetica, Arial, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -99,7 +99,7 @@ img {
 }
 
 .front #section-header{
-  margin-top:2em;
+  /*margin-top:2em;*/
 }
 
 #region-branding {
@@ -109,8 +109,16 @@ img {
 #zone-branding-wrapper {
   background-color:#39275b;
   color:white;
+  padding-top:.75em;
 }
 #zone-menu-wrapper {
+  background-color:#DBB300;
+  /*padding-top:.55em;*/
+}
+#zone-menu-wrapper ul {
+  height:100%;
+}
+#zone-menu-wrapper ul li {
   background-color:#DBB300;
 }
 
@@ -173,4 +181,17 @@ width:49%;
 
 .field-name-field-location-category .field-item:not(:last-child):after {
   content: ", ";
+}
+
+#zone-footer-wrapper {
+  background-color:#fff;
+  color:#39275B;
+}
+
+#zone-postscript-wrapper {
+  background-color:#39275B;
+  color:white;
+}
+.page-taxonomy-term #page-title {
+  display:none;
 }
