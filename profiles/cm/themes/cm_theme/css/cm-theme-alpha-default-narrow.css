@@ -4,7 +4,7 @@
  *  and widescreen CSS files as appropriate. */
 
 #zone-menu .menu li:not(#mobile-menu-link) a {
-  font-size:60%;
+  font-size:85%;
 }
 
 #zone-menu .menu li:not(#mobile-menu-link) {

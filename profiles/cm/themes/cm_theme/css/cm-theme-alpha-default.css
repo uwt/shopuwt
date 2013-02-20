@@ -1,9 +1,13 @@
 /* This file will hold styles for all layouts using the alpha grid (i.e. not the mobile layout). */
 
-html body{
+html body {
   /* background: #eef2f6 url(../images/bg.jpg) no-repeat center top; */
   font-size:1em;
-  line-height:1em;
+  line-height:1.25em;
+}
+
+html body p {
+margin-bottom:0.5em;
 }
 
 #block-system-main-menu,
@@ -90,7 +94,8 @@ body.not-front #zone-menu .menu li:not(#mobile-menu-link) {
   /*height:1.5em;*/
   border-bottom:none;
   border-right:0;
-  /*margin-top:.25em;*/
+  margin-top:.25em;
+  margin-bottom:.25em;
 }
 #zone-menu-wrapper #zone-menu .menu li.first.leaf a{
   padding-left:0;
@@ -108,6 +113,7 @@ body.not-front #zone-menu .menu li:not(#mobile-menu-link) {
   margin-right:auto;
   text-transform:uppercase;
   font-size:85%;
+  font-weight:bold;
   color:white;
   background-color:#DBB300;
 }
@@ -126,9 +132,13 @@ body.not-front #zone-menu .menu li:not(#mobile-menu-link) {
 
 }
 
-.page-taxonomy-term .pane-content h1 {
+.page-taxonomy-term .pane-content h1,
+h1#page-title,
+.pane-node-title .pane-content{
+  font-size:2em;
+  line-height:100%;
+  margin-bottom:.75em;
 }
-
 
 /******************
  *     Footer     *
@@ -189,6 +199,14 @@ html>/**/body .section-content {height: 100%;}
   width:auto;
   height:auto;
 }
+.view-id-term_slideshow .flexslider,
+.pane-node-field-location-logo .field-name-field-location-logo{
+  border:none;
+  margin-top:4px;
+}
+.field-name-field-location-category.field-type-taxonomy-term-reference div.field-item{
+  display:inline;  
+}
 
 
 /*************************
@@ -197,4 +215,9 @@ html>/**/body .section-content {height: 100%;}
 .bgstretcher-page,
 .bgstretcher-area{
   height:100%;
+}
+
+.view-location-listing td {
+  padding-top:8px;
+  padding-bottom:8px;
 }
