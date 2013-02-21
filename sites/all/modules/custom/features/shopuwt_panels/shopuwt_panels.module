@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the ShopUWT Panels feature.
+ */
+
+include_once('shopuwt_panels.features.inc');
