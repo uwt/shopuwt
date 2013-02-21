@@ -48,9 +48,6 @@ tr.even:hover td.active{
 
 /* Layout */
 
-body {
-  background: #fff;
-}
 
 #block-system-main-menu,
 .site-name-slogan,
@@ -151,10 +148,6 @@ content: " - ";
 #mobile-menu-link{
   text-decoration:none;
   /*font-size:2.5em;*/
-}
-body.front {
-/*background:url("../images/HomePage7_03.jpg");
-background-repeat:no-repeat;*/
 }
 
 body.not-front #zone-menu .menu li:not(#mobile-menu-link) {

@@ -1,0 +1,8 @@
+<?php
+
+function bgslideshow_preprocess_page(&$variables) {
+  if ($variables['is_front']) {
+    drupal_add_js(drupal_get_path('module', 'bgslideshow') . '/bgslideshow.js');
+    $variables['scripts'] = drupal_get_js();
+  }
+}

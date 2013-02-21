@@ -6,6 +6,11 @@ html body {
   line-height:1.25em;
 }
 
+html body.not-front{
+  background-image:none;
+  background-color:#fff;
+}
+
 html body p {
 margin-bottom:0.5em;
 }
@@ -119,18 +124,23 @@ body.not-front #zone-menu .menu li:not(#mobile-menu-link) {
 }
 
 /* Front page */
-#zone-content {
+body.not-front #zone-content {
   background-color:white;
 }
 
 /**************************
  *      Content           *
  *************************/
-#zone-content-wrapper {
+body.not-front #zone-content-wrapper {
   background-color:white;
   color:black;
-
 }
+body.front #zone-content-wrapper,
+body.front #zone-content{
+  background-color:transparent;
+}
+
+
 
 .page-taxonomy-term .pane-content h1,
 h1#page-title,
@@ -211,11 +221,42 @@ html>/**/body .section-content {height: 100%;}
 
 /*************************
  *  Background Slideshow *
+ *  http://css-tricks.com/perfect-full-page-background-image/ *
  ************************/
-.bgstretcher-page,
-.bgstretcher-area{
-  height:100%;
+
+body.front #block-block-8 p img{
+  z-index:-1;
+  /*display:none;*/
 }
+
+body.front #block-block-8 p img:nth-child(2) {
+  /*display:block;*/
+}
+
+body.front #block-block-8 p img {
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (max-width: 1024px) { /* Specific to this particular image */
+  body.front #block-block-8 p img {
+    left: 50%;
+    margin-left: -512px;   /* 50% */
+  }
+}
+
+
+
 
 .view-location-listing td {
   padding-top:8px;

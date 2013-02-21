@@ -1,0 +1,5 @@
+name = UWT Background Slideshow
+description =  Provides a full screen background slideshow. Simple.
+package = Custom
+core = 7.x
+files[] = bgslideshow.module
