@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the ShopUWT Views feature.
+ */
+
+include_once('shopuwt_views.features.inc');
