@@ -13,16 +13,18 @@
 
 function cm_theme_preprocess_html(&$variables) {
   // Determine if we're ID 7
-  if(preg_match('/MSIE 7/i',$_SERVER['HTTP_USER_AGENT'])) {
-    $variables['attributes_array']['class'][] = 'ie7';
+  if (isset($_SERVER['HTTP_USER_AGENT'])) {
+    if(preg_match('/MSIE 7/i',$_SERVER['HTTP_USER_AGENT'])) {
+      $variables['attributes_array']['class'][] = 'ie7';
 
-    drupal_add_css(path_to_theme() . '/css/ie-lte-7.css', 
-        array('group' => CSS_THEME, 
-          'browsers' => array(
-            'IE' => 'lte IE 7', 
-            '!IE' => FALSE), 
-          'preprocess' => FALSE)
-        );  
+      drupal_add_css(path_to_theme() . '/css/ie-lte-7.css', 
+          array('group' => CSS_THEME, 
+            'browsers' => array(
+              'IE' => 'lte IE 7', 
+              '!IE' => FALSE), 
+            'preprocess' => FALSE)
+          );  
+    }
   }
 
   drupal_add_css(path_to_theme() . '/css/ie-lte-8.css', 

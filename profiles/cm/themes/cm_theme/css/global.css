@@ -154,6 +154,14 @@ body.not-front #zone-menu .menu li:not(#mobile-menu-link) {
   display:none;
 }
 
+body.front #block-block-8 p img{
+  display:none; /* Hide slideshow on mobile */
+}
+
+body.front #block-block-9 {
+  display:none; /* Hide IE7 background image by default */
+}
+
 .views-view-grid.cols-2 td {
 width:49%;
 }

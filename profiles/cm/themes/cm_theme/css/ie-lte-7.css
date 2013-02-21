@@ -1,5 +1,40 @@
 /* LTE IE 7 */
-body.front.ie7 #block-block-8 p img{
-  position:absolute;
-  color:lime;
+
+body.front.ie7 {
+  background-image: url('../images/shopuwt-3.jpg');
+  background-repeat:no-repeat;
+  background-position:center center;
 }
+
+body.front.ie7 #block-block-8 p img{
+  display:none;
+}
+
+
+body.ie7 #zone-menu .menu li {
+  display:inline;
+}
+
+body.ie7 #zone-menu #mobile-menu-link {
+  display:none;
+}
+body.ie7 #zone-menu .menu li {
+  text-decoration:none;
+  font-weight:bold;
+  border-right:1px solid white;
+  margin-right:1em;
+  padding-right:0.5em;
+}
+
+body.ie7 #zone-menu .menu li.last {
+  border-right:none;
+}
+body.ie7 #zone-menu .menu li a:link,
+body.ie7 #zone-menu .menu li a:visited {
+  color:white;
+}
+
+.ie7 table td {
+  border-top:1px solid black;  
+}
+

@@ -226,7 +226,7 @@ html>/**/body .section-content {height: 100%;}
 
 body.front #block-block-8 p img{
   z-index:-1;
-  /*display:none;*/
+  display:block; /* Show slideshow on non-mobile */
 }
 
 body.front #block-block-8 p img:nth-child(2) {

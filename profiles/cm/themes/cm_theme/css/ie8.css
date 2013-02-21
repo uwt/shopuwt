@@ -5,7 +5,8 @@
 body.not-front #zone-menu .menu li {
   display:inline-block;
 }
-#zone-menu .menu ul:first-child {
+#zone-menu .menu ul:first-child,
+body #zone-menu .menu #mobile-menu-link {
   display:none;
 }
 body #zone-menu .menu li {
