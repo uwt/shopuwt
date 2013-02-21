@@ -315,6 +315,11 @@ function shopuwt_views_views_default_views() {
   $handler->display->display_options['filters']['field_location_discount_value']['field'] = 'field_location_discount_value';
   $handler->display->display_options['filters']['field_location_discount_value']['operator'] = 'not empty';
   $handler->display->display_options['path'] = 'deals';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Deals';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'main-menu';
+  $handler->display->display_options['menu']['context'] = 0;
   $export['location_listing'] = $view;
 
   $view = new view;
