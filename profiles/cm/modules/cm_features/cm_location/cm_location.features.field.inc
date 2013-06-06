@@ -76,7 +76,75 @@ function cm_location_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '31',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-location-field_grab_n_go'
+  $fields['node-location-field_grab_n_go'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_grab_n_go',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_with_summary',
+    ),
+    'field_instance' => array(
+      'bundle' => 'location',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 9,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_grab_n_go',
+      'label' => 'Grab n\' Go',
+      'required' => 0,
+      'settings' => array(
+        'display_summary' => 0,
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '10',
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
+        'weight' => '13',
       ),
     ),
   );
@@ -145,7 +213,7 @@ function cm_location_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '35',
+        'weight' => '7',
       ),
     ),
   );
@@ -207,7 +275,7 @@ function cm_location_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '36',
+        'weight' => '8',
       ),
     ),
   );
@@ -275,7 +343,7 @@ function cm_location_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '38',
+        'weight' => '10',
       ),
     ),
   );
@@ -334,7 +402,7 @@ function cm_location_field_default_fields() {
           'geocoder_handler' => 'google',
         ),
         'type' => 'geocoder',
-        'weight' => '33',
+        'weight' => '5',
       ),
     ),
   );
@@ -415,7 +483,7 @@ function cm_location_field_default_fields() {
           ),
         ),
         'type' => 'addressfield_standard',
-        'weight' => '32',
+        'weight' => '4',
       ),
     ),
   );
@@ -505,7 +573,7 @@ function cm_location_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
-        'weight' => '34',
+        'weight' => '6',
       ),
     ),
   );
@@ -573,7 +641,7 @@ function cm_location_field_default_fields() {
           'size' => '25',
         ),
         'type' => 'text_textfield',
-        'weight' => '37',
+        'weight' => '9',
       ),
     ),
   );
@@ -655,7 +723,7 @@ function cm_location_field_default_fields() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_field',
-        'weight' => '39',
+        'weight' => '12',
       ),
     ),
   );
@@ -759,6 +827,7 @@ function cm_location_field_default_fields() {
   t('Cost per person');
   t('Discount');
   t('Geofield');
+  t('Grab n\' Go');
   t('Location');
   t('Logo');
   t('Phone Number');

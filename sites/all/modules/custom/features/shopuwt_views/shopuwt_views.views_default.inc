@@ -195,8 +195,8 @@ function shopuwt_views_views_default_views() {
   $handler->display->display_options['link_to_view'] = '0';
   $handler->display->display_options['inherit_panels_path'] = '1';
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page_1');
+  /* Display: Deals */
+  $handler = $view->new_display('page', 'Deals', 'page_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Awesome student deals';
   $handler->display->display_options['defaults']['header'] = FALSE;
@@ -317,6 +317,132 @@ function shopuwt_views_views_default_views() {
   $handler->display->display_options['path'] = 'deals';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Deals';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'main-menu';
+  $handler->display->display_options['menu']['context'] = 0;
+
+  /* Display: Grab n Go */
+  $handler = $view->new_display('page', 'Grab n Go', 'page_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Grab \'n Go';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = FALSE;
+  $handler->display->display_options['header']['area']['content'] = 'The following local retailers offer great deals to current UW Tacoma students. Just show your student ID to get in on the action.';
+  $handler->display->display_options['header']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['header']['area']['tokenize'] = 0;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  /* Field: Content: Location */
+  $handler->display->display_options['fields']['field_location_location']['id'] = 'field_location_location';
+  $handler->display->display_options['fields']['field_location_location']['table'] = 'field_data_field_location_location';
+  $handler->display->display_options['fields']['field_location_location']['field'] = 'field_location_location';
+  $handler->display->display_options['fields']['field_location_location']['label'] = '';
+  $handler->display->display_options['fields']['field_location_location']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_location_location']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_location_location']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_location_location']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_location_location']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_location_location']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_location_location']['click_sort_column'] = 'country';
+  $handler->display->display_options['fields']['field_location_location']['type'] = 'gmaplink_formatter';
+  $handler->display->display_options['fields']['field_location_location']['settings'] = array(
+    'display_type' => 'addr_parts',
+    'link_text' => 'Go to map',
+    'addr_parts_display' => array(
+      'thoroughfare' => 'thoroughfare',
+      'locality' => 0,
+      'administrative_area' => 0,
+      'postal_code' => 0,
+    ),
+  );
+  $handler->display->display_options['fields']['field_location_location']['field_api_classes'] = 0;
+  /* Field: Content: Grab n' Go */
+  $handler->display->display_options['fields']['field_grab_n_go']['id'] = 'field_grab_n_go';
+  $handler->display->display_options['fields']['field_grab_n_go']['table'] = 'field_data_field_grab_n_go';
+  $handler->display->display_options['fields']['field_grab_n_go']['field'] = 'field_grab_n_go';
+  $handler->display->display_options['fields']['field_grab_n_go']['label'] = 'Grab n\' Go details';
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_grab_n_go']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_grab_n_go']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_grab_n_go']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_grab_n_go']['field_api_classes'] = 0;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'location' => 'location',
+  );
+  /* Filter criterion: Content: Grab n&#039; Go (field_grab_n_go) */
+  $handler->display->display_options['filters']['field_grab_n_go_value']['id'] = 'field_grab_n_go_value';
+  $handler->display->display_options['filters']['field_grab_n_go_value']['table'] = 'field_data_field_grab_n_go';
+  $handler->display->display_options['filters']['field_grab_n_go_value']['field'] = 'field_grab_n_go_value';
+  $handler->display->display_options['filters']['field_grab_n_go_value']['operator'] = 'not empty';
+  $handler->display->display_options['path'] = 'grab-n-go';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Grab n\' Go';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'main-menu';
   $handler->display->display_options['menu']['context'] = 0;
