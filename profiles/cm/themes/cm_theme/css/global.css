@@ -104,9 +104,9 @@ img {
   padding-bottom:5px;
 }
 #zone-branding-wrapper {
-  background-color:#39275b;
   color:white;
   padding-top:.75em;
+  background-color:rgba(57, 39, 91, 0.8);
 }
 #zone-menu-wrapper {
   background-color:#DBB300;
@@ -185,12 +185,16 @@ width:49%;
 }
 
 #zone-footer-wrapper {
-  background-color:#fff;
+  background-color:transparent;
   color:#39275B;
 }
 
+#zone-footer-wrapper .region{
+  
+}
+
 #zone-postscript-wrapper {
-  background-color:#39275B;
+  background-color:rgba(57, 39, 91, 0.8);
   color:white;
 }
 .page-taxonomy-term #page-title {

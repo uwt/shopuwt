@@ -69,13 +69,15 @@ HTML, BODY {
 
 
 #region-branding .branding-data {
-  width:350px;
+  width:715px;
   float:left;
 }
 #region-branding #block-block-7 {
-  width:300px;
+  width:200px;
   float:left;
   height:65px;
+  display:none;
+  visibility:hidden;
 }
 
 #region-branding #block-block-7 .content {
@@ -261,4 +263,30 @@ body.front #block-block-8 p img {
 .view-location-listing td {
   padding-top:8px;
   padding-bottom:8px;
+}
+
+/*  Homepage */
+
+#zone-footer{
+  margin-bottom:1em;
+}
+
+.front #zone-footer .region-inner{
+  color:#fff;
+  background-color:rgba(57, 39, 91, 0.8);
+  transition: all 0.5s ease;
+  min-height:8em;
+  padding-left:1em;
+  padding-right:1em;
+}
+
+.front #zone-footer .region-inner:hover{
+  background-color: rgba(219, 179, 0, 0.9);
+  color:white;
+}
+
+
+.semi-opaque-purple-bg{
+  background-color:rgba(yellow, 0.8);
+  color:#fff;
 }
