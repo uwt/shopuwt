@@ -10,3 +10,11 @@
 #zone-menu .menu li:not(#mobile-menu-link) {
   /*margin-top:.13em;*/
 }
+
+html { 
+  /*background: url('/~jamesini/shopuwt/sites/default/files/bgslideshow/HomePage1.jpg');*/
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}

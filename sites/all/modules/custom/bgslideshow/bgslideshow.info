@@ -1,5 +1,6 @@
-name = UWT Background Slideshow
-description =  Provides a full screen background slideshow. Simple.
+name = UWT Background Random image on homepage
+description =  Provides a full screen background image. Simple.
 package = Custom
 core = 7.x
 files[] = bgslideshow.module
+files[] = js/bgslideshow.js

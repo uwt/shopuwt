@@ -1,41 +1,22 @@
 (function ($) {
 
-  Drupal.behaviors.bgstretcher = {
+  Drupal.behaviors.bgslideshow = {
     attach: function (context, settings) {
+      // Get the base path for the Drupal instance and the slideshow images
+      var basePath = settings.basePath;
+      var images = settings.bgslideshow.images;
+      // Picka random image
+      var bgimage = images[Math.floor(Math.random() * images.length)];
+      // Set up the css styles
+      var styles = {
+        'background' : 'url(' + basePath + bgimage + ')',
+        'background-repeat' : 'no-repeat',
+        'background-size' : 'cover',
+        'background-position' : 'center'
+      };
+      // Assign the styles to the HTML element
+      $("html").css(styles);
 
-
-    $('body', context).once('removeElements', function () {
-      $('body').bind('responsivelayout', function (e, d) {
-        if (d.from == 'mobile' || d.to == 'mobile') {
-          console.log(d);
-          if (d.to == 'mobile') {
-            $('#block-block-8').detach();
-          } else {
-            
-            }
-          }
-        });
-      });
-
-    // Don't run this for IE 7.  IE6 is completely borked, so who cares.
-    if ($.browser.msie && $.browser.version == "7.0") {
-      return;
-      } else if ($('body').hasClass('responsive-layout-mobile')) {
-        return;
-        }
-      else {
-// http://snook.ca/archives/javascript/simplest-jquery-slideshow
-      $('#block-block-8 p img:gt(0)').hide();
-      setInterval(function(){
-        $('#block-block-8 p :first-child')
-        .fadeOut(4000)
-        .next('img')
-        .fadeIn()
-        .end()
-        .appendTo('#block-block-8 p');},
-        8000);
     }
-    }
-  };
-
+  }
 })(jQuery);

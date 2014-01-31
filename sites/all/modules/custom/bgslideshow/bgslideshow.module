@@ -1,8 +1,23 @@
 <?php
 
 function bgslideshow_preprocess_page(&$variables) {
+  // Only add the slideshow to the homepage
   if ($variables['is_front']) {
-    drupal_add_js(drupal_get_path('module', 'bgslideshow') . '/bgslideshow.js');
-    $variables['scripts'] = drupal_get_js();
+    // Get the Drupal 7 public files path
+    $files_path = variable_get('file_public_path', conf_path() . '/files');
+    // This file path was created manually. I didn't want the images stored
+    //  in the module or theme as they'd muck up the code repository
+    $images_path = $files_path . '/bgslideshow';
+    // Get all the images from our path
+    $images = file_scan_directory($images_path, '/.*\.jpg$|.*\.png$/');
+    // Set the image paths into an array so we can add them as a settings
+    //  variable that is available to javascript.
+    $settings = array('images' => array_keys($images));
+    // Add our custom js file
+    $jspath = drupal_get_path('module', 'bgslideshow') . '/bgslideshow.js';
+    drupal_add_js($jspath, 'file');
+    // Add the settings to javascript
+    drupal_add_js(array('bgslideshow' => $settings), 'setting');
+
   }
 }

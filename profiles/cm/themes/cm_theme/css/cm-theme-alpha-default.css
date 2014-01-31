@@ -227,8 +227,8 @@ html>/**/body .section-content {height: 100%;}
  ************************/
 
 body.front #block-block-8 p img{
-  z-index:-1;
-  display:block; /* Show slideshow on non-mobile */
+/*  z-index:-1;
+  display:block;  Show slideshow on non-mobile */
 }
 
 body.front #block-block-8 p img:nth-child(2) {
@@ -236,18 +236,21 @@ body.front #block-block-8 p img:nth-child(2) {
 }
 
 body.front #block-block-8 p img {
-  /* Set rules to fill background */
+  /* Set rules to fill background 
   min-height: 100%;
   min-width: 1024px;
+  */
 
-  /* Set up proportionate scaling */
+  /* Set up proportionate scaling
   width: 100%;
   height: auto;
+  */
 
-  /* Set up positioning */
+  /* Set up positioning
   position: fixed;
   top: 0;
   left: 0;
+  */
 }
 
 @media screen and (max-width: 1024px) { /* Specific to this particular image */

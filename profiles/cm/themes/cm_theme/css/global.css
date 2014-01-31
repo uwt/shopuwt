@@ -155,7 +155,7 @@ body.not-front #zone-menu .menu li:not(#mobile-menu-link) {
 }
 
 body.front #block-block-8 p img{
-  display:none; /* Hide slideshow on mobile */
+  /* display:none;  Hide slideshow on mobile */
 }
 
 body.front #block-block-9 {
