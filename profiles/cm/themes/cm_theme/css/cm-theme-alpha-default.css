@@ -274,14 +274,6 @@ body.front #block-block-8 p img {
   margin-bottom:1em;
 }
 
-.front #zone-footer .region-inner{
-  color:#fff;
-  background-color:rgba(57, 39, 91, 0.8);
-  transition: all 0.5s ease;
-  min-height:8em;
-  padding-left:1em;
-  padding-right:1em;
-}
 
 .front #zone-footer .region-inner:hover{
   background-color: rgba(219, 179, 0, 0.9);

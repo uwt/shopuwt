@@ -7,6 +7,7 @@
       var images = settings.bgslideshow.images;
       // Picka random image
       var bgimage = images[Math.floor(Math.random() * images.length)];
+      console.log(bgimage);
       // Set up the css styles
       var styles = {
         'background' : 'url(' + basePath + bgimage + ')',

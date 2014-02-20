@@ -34,3 +34,14 @@ body #zone-menu .menu li {
   color:white;
   background-color:#DBB300;
 }
+
+#zone-branding-wrapper,
+.front #zone-footer .region-inner,
+#zone-postscript-wrapper{
+  background:url('../images/ie8-home-footer-bg.png');
+}
+
+body #zone-menu ul.menu li a:link,
+body #zone-menu ul.menu li a:visited{
+font-size:100%;
+}
