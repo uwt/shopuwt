@@ -235,9 +235,9 @@ function cm_location_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          1 => 'Under $10',
-          2 => '$10-$16',
-          3 => '$17 and up',
+          1 => '$',
+          2 => '$$',
+          3 => '$$$',
         ),
         'allowed_values_function' => '',
       ),
@@ -284,7 +284,7 @@ function cm_location_field_default_fields() {
   $fields['node-location-field_location_discount'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '5',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_location_discount',
