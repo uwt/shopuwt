@@ -1,6 +1,9 @@
 # Ignore configuration files that may contain sensitive information.
 sites/*/settings*.php
 
+# Ignore some custom modules that are shared amongst multiple installs
+sites/all/modules/custom/srmods
+
 # Ignore paths that contain user-generated content.
 sites/*/files
 sites/*/private
