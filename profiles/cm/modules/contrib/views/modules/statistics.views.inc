@@ -1,18 +1,14 @@
 <?php
+
 /**
  * @file
- * Provide views data and handlers for statistics.module
- */
-
-/**
- * @defgroup views_statistics_module statistics.module handlers
+ * Provide views data and handlers for statistics.module.
  *
- * Includes the ability to create views of just the statistics table.
- * @{
+ * @ingroup views_module_handlers
  */
 
 /**
- * Implements hook_views_data()
+ * Implements hook_views_data().
  */
 function statistics_views_data() {
   // Basic table information.
@@ -36,7 +32,7 @@ function statistics_views_data() {
     'help' => t('The total number of times the node has been viewed.'),
 
     'field' => array(
-      'handler' => 'views_handler_field_numeric',
+      'handler' => 'views_handler_field_statistics_numeric',
       'click sortable' => TRUE,
      ),
     'filter' => array(
@@ -53,7 +49,7 @@ function statistics_views_data() {
     'help' => t('The total number of times the node has been viewed today.'),
 
     'field' => array(
-      'handler' => 'views_handler_field_numeric',
+      'handler' => 'views_handler_field_statistics_numeric',
       'click sortable' => TRUE,
      ),
     'filter' => array(
@@ -70,7 +66,7 @@ function statistics_views_data() {
     'help' => t('The most recent time the node has been viewed.'),
 
     'field' => array(
-      'handler' => 'views_handler_field_date',
+      'handler' => 'views_handler_field_node_counter_timestamp',
       'click sortable' => TRUE,
     ),
     'filter' => array(
@@ -265,7 +261,3 @@ function statistics_views_data() {
 
   return $data;
 }
-
-/**
- * @}
- */

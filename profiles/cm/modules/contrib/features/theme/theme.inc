@@ -81,6 +81,7 @@ function template_preprocess_features_admin_components(&$vars) {
   // Other elements
   $vars['buttons'] = drupal_render($form['buttons']);
   $vars['form'] = $form;
+  $vars['lock_feature'] = theme('features_lock_link', array('feature' => $form['#feature']->name));
 }
 
 /**
@@ -89,15 +90,54 @@ function template_preprocess_features_admin_components(&$vars) {
 function theme_features_module_status($vars) {
   switch ($vars['status']) {
     case FEATURES_MODULE_ENABLED:
-      $text = !empty($vars['module']) ? $vars['module'] : t('Enabled');
-      return "<span class='admin-enabled'>{$text}</span>";
+      $text_status = t('Enabled');
+      $class = 'admin-enabled';
+      break;
     case FEATURES_MODULE_DISABLED:
-      $text = !empty($vars['module']) ? $vars['module'] : t('Disabled');
-      return "<span class='admin-disabled'>{$text}</span>";
+      $text_status = t('Disabled');
+      $class = 'admin-disabled';
+      break;
     case FEATURES_MODULE_MISSING:
-      $text = !empty($vars['module']) ? $vars['module'] : t('Missing');
-      return "<span class='admin-missing'>{$text}</span>";
+      $text_status = t('Missing');
+      $class = 'admin-missing';
+      break;
+    case FEATURES_MODULE_CONFLICT:
+      $text_status = t('Enabled');
+      $class = 'admin-conflict';
+      break;
   }
+  $text = !empty($vars['module']) ? $vars['module'] . ' (' . $text_status . ')' : $text_status;
+  return "<span class=\"$class\">$text</span>";
+}
+
+/**
+ * Themes a lock link
+ */
+function theme_features_lock_link($vars) {
+  drupal_add_library('system', 'ui');
+  drupal_add_library('system', 'drupal.ajax');
+  $component = $vars['component'] ? $vars['component'] : '';
+  if ($component && features_component_is_locked($component)) {
+    return l(t('Component locked'), 'admin/structure/features/settings', array(
+      'attributes' => array(
+        'class' => 'features-lock-icon ui-icon ui-icon-locked',
+        'title' => t('This component is locked on a global level.'),
+      ),
+      'fragment' => 'edit-lock-components',
+    ));
+  }
+  $feature = $vars['feature'];
+  $is_locked = features_feature_is_locked($feature, $component);
+  $options = array(
+    'attributes' => array(
+      'class' => array('use-ajax features-lock-icon ui-icon ' . ($is_locked ? ' ui-icon-locked' : ' ui-icon-unlocked')),
+      'id' => 'features-lock-link-' . $feature . ($component ? '-' . $component : ''),
+      'title' => $is_locked ? t('This item is locked and features will not be rebuilt or reverted.') : t('This item is unlocked and will be rebuilt/reverted as normal.'),
+    ),
+    'query' => array('token' => drupal_get_token('features/' . $feature . '/' . $component)),
+  );
+  $path =  "admin/structure/features/" . $feature . "/lock/nojs" . ($component ? '/' . $component: '');
+  return l($is_locked ? t('UnLock') : t('Lock'), $path, $options);
 }
 
 /**
@@ -112,6 +152,7 @@ function theme_features_storage_link($vars) {
     FEATURES_REBUILDABLE => 'admin-rebuilding',
     FEATURES_CONFLICT => 'admin-conflict',
     FEATURES_DISABLED => 'admin-disabled',
+    FEATURES_CHECKING => 'admin-loading',
   );
   $default_text = array(
     FEATURES_OVERRIDDEN => t('Overridden'),
@@ -121,6 +162,7 @@ function theme_features_storage_link($vars) {
     FEATURES_REBUILDABLE => t('Rebuilding'),
     FEATURES_CONFLICT => t('Conflict'),
     FEATURES_DISABLED => t('Disabled'),
+    FEATURES_CHECKING => t('Checking...'),
   );
   $text = isset($vars['text']) ? $vars['text'] : $default_text[$vars['storage']];
   if ($vars['path']) {
@@ -140,7 +182,7 @@ function theme_features_form_buttons(&$vars) {
   drupal_add_css(drupal_get_path('module', 'features') . '/features.css');
 
   $output = drupal_render_children($vars['element']);
-  return !empty($output) ? "<div class='buttons clear-block'>{$output}</div>" : '';
+  return !empty($output) ? "<div class='buttons clearfix'>{$output}</div>" : '';
 }
 
 /**
@@ -215,9 +257,9 @@ function theme_features_form_export(&$vars) {
   drupal_add_js(drupal_get_path('module', 'features') . '/features.js');
 
   $output = '';
-  $output .= "<div class='clear-block features-components'>";
+  $output .= "<div class='clearfix features-components'>";
   $output .= "<div class='column'>" . drupal_render($vars['form']['components']) . drupal_render($vars['form']['sources']) . "</div>";
-  $output .= "<div class='column'>" . drupal_render($vars['form']['features']) . "</div>";
+  $output .= "<div class='column'>" . drupal_render($vars['form']['preview']) . drupal_render($vars['form']['features']) . "</div>";
   $output .= "</div>";
   $output .= drupal_render_children($vars['form']);
   return $output;

@@ -22,6 +22,7 @@ function filefield_source_remote_info() {
     'description' => t('Download a file from a remote server.'),
     'process' => 'filefield_source_remote_process',
     'value' => 'filefield_source_remote_value',
+    'file' => 'sources/remote.inc',
   );
   return $source;
 }
@@ -93,7 +94,7 @@ function filefield_source_remote_process($element, &$form_state, $form) {
     '#limit_validation_errors' => array($element['#parents']),
     '#ajax' => array(
       'path' => 'file/ajax/' . implode('/', $element['#array_parents']) . '/' . $form['form_build_id']['#value'],
-      'wrapper' => $element['#id'] . '-ajax-wrapper',
+      'wrapper' => $element['upload_button']['#ajax']['wrapper'],
       'effect' => 'fade',
       'progress' => array(
         'type' => 'bar',
@@ -139,6 +140,7 @@ function filefield_source_remote_value($element, &$item) {
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HEADER, TRUE);
     curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADERFUNCTION, '_filefield_source_remote_parse_header');
     // Causes a warning if PHP safe mode is on.
     @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
@@ -146,7 +148,6 @@ function filefield_source_remote_value($element, &$item) {
     $info = curl_getinfo($ch);
     if ($info['http_code'] != 200) {
       curl_setopt($ch, CURLOPT_HTTPGET, TRUE);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
       $file_contents = curl_exec($ch);
       $info = curl_getinfo($ch);
     }

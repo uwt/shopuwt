@@ -194,9 +194,13 @@ function panels_stylizer_stylizer_style_settings_form($style_settings, $display,
  * Allow on-the-fly creation of styles in panes.
  */
 function panels_stylizer_pane_add_style(&$renderer, $plugin, &$conf, $type, $pid, $step = NULL) {
-  if (!user_access('administer panels styles')) {
+  if (!user_access("administer panels $type styles")) {
     return;
   }
+
+  // Reset the $_POST['ajax_html_ids'] values to preserve
+  // proper IDs on form elements when auto-submit is used.
+  $_POST['ajax_html_ids'] = array();
 
   ctools_include('stylizer');
   $js = FALSE;
@@ -271,7 +275,7 @@ function panels_stylizer_pane_add_style(&$renderer, $plugin, &$conf, $type, $pid
  * preconfigured style.
  */
 function panels_stylizer_edit_pane_style_form(&$form, &$form_state) {
-  if (!user_access('administer panels styles') || !module_exists('stylizer')) {
+  if (!user_access('administer panels pane styles') || !module_exists('stylizer')) {
     return;
   }
   ctools_include('dependent');
@@ -318,7 +322,7 @@ function panels_stylizer_edit_pane_style_form(&$form, &$form_state) {
  * Validate to see if we need to check the preconfigured values.
  */
 function panels_stylizer_edit_pane_style_form_validate(&$form, &$form_state) {
-  if (!user_access('administer panels styles')) {
+  if (!user_access('administer panels pane styles')) {
     return;
   }
 
@@ -352,7 +356,7 @@ function panels_stylizer_edit_pane_style_form_validate(&$form, &$form_state) {
  * Store the preconfigured values.
  */
 function panels_stylizer_edit_pane_style_form_submit(&$form, &$form_state) {
-  if (!user_access('administer panels styles')) {
+  if (!user_access('administer panels pane styles')) {
     return;
   }
 

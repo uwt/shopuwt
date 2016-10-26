@@ -68,6 +68,7 @@ function panels_edit_display_form($form, &$form_state) {
     $links = $renderer->get_display_links();
   }
   else {
+    $renderer->no_edit_links = TRUE;
     $links = '';
   }
   $form['hide']['display-settings'] = array(
@@ -239,7 +240,7 @@ function panels_edit_display_settings_form($form, &$form_state) {
       '#type' => 'textfield',
       '#default_value' => $display->title,
       '#title' => t('Title'),
-      '#description' => t('The title of this panel. If left blank, a default title may be used. Set to No Title if you want the title to actually be blank.'),
+      '#description' => t('The title of this panel. If left blank, a default title may be used. If you want the title actually to be blank, change the "Title type" dropdown from "Manually Set" to "No Title".'),
       '#process' => array('ctools_dependent_process'),
       '#dependency' => array('edit-display-title-hide-title' => array(PANELS_TITLE_FIXED)),
       '#maxlength' => 255,
@@ -301,7 +302,7 @@ function panels_edit_display_settings_form($form, &$form_state) {
  * Validate the layout settings form.
  */
 function panels_edit_display_settings_form_validate($form, &$form_state) {
-  if ($function = panels_plugin_get_function('layout', $form_state['layout'], 'settings validate')) {
+  if ($function = panels_plugin_get_function('layouts', $form_state['layout'], 'settings validate')) {
     $function($form_state['values']['layout_settings'], $form['layout_settings'], $form_state['display'], $form_state['layout'], $form_state['display']->layout_settings);
   }
 }
@@ -311,7 +312,7 @@ function panels_edit_display_settings_form_validate($form, &$form_state) {
  */
 function panels_edit_display_settings_form_submit($form, &$form_state) {
   $display = &$form_state['display'];
-  if ($function = panels_plugin_get_function('layout', $form_state['layout'], 'settings submit')) {
+  if ($function = panels_plugin_get_function('layouts', $form_state['layout'], 'settings submit')) {
     $function($form_state['values']['layout_settings'], $display, $form_state['layout'], $display->layout_settings);
   }
 

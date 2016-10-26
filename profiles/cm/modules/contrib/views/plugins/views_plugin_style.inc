@@ -1,7 +1,12 @@
 <?php
 
 /**
- * @defgroup views_style_plugins Views' style plugins
+ * @file
+ * Definition of views_plugin_style.
+ */
+
+/**
+ * @defgroup views_style_plugins Views style plugins
  * @{
  * Style plugins control how a view is rendered. For example, they
  * can choose to display a collection of fields, node_view() output,
@@ -11,7 +16,7 @@
  * a single record. Not all style plugins can utilize this, so it is
  * up to the plugin to set this up and call through to the row plugin.
  *
- * @see hook_views_plugins
+ * @see hook_views_plugins()
  */
 
 /**
@@ -22,6 +27,15 @@ class views_plugin_style extends views_plugin {
    * Store all available tokens row rows.
    */
   var $row_tokens = array();
+
+  /**
+   * Contains the row plugin, if it's initialized
+   * and the style itself supports it.
+   *
+   * @var views_plugin_row
+   */
+  var $row_plugin;
+
   /**
    * Initialize a style plugin.
    *
@@ -75,15 +89,18 @@ class views_plugin_style extends views_plugin {
 
   /**
    * Return TRUE if this style also uses fields.
+   *
+   * @return bool
    */
   function uses_fields() {
     // If we use a row plugin, ask the row plugin. Chances are, we don't
     // care, it does.
+    $row_uses_fields = FALSE;
     if ($this->uses_row_plugin() && !empty($this->row_plugin)) {
-      return $this->row_plugin->uses_fields();
+      $row_uses_fields = $this->row_plugin->uses_fields();
     }
-    // Otherwise, maybe we do.
-    return !empty($this->definition['uses fields']);
+    // Otherwise, check the definition or the option.
+    return $row_uses_fields || !empty($this->definition['uses fields']) || !empty($this->options['uses_fields']);
   }
 
   /**
@@ -106,13 +123,23 @@ class views_plugin_style extends views_plugin {
   function get_row_class($row_index) {
     if ($this->uses_row_class()) {
       $class = $this->options['row_class'];
+
       if ($this->uses_fields() && $this->view->field) {
-        $class = strip_tags($this->tokenize_value($class, $row_index));
+        $classes = array();
+
+        // Explode the value by whitespace, this allows the function to handle
+        // a single class name and multiple class names that are then tokenized.
+        foreach(explode(' ', $class) as $token_class) {
+          $classes[] = strip_tags($this->tokenize_value($token_class, $row_index));
+        }
+      }
+      else {
+        $classes = explode(' ', $class);
       }
 
-      $classes = explode(' ', $class);
+      // Convert whatever the result is to a nice clean class name
       foreach ($classes as &$class) {
-        $class = drupal_clean_css_identifier($class);
+        $class = drupal_html_class($class);
       }
       return implode(' ', $classes);
     }
@@ -154,7 +181,10 @@ class views_plugin_style extends views_plugin {
     $options['grouping'] = array('default' => array());
     if ($this->uses_row_class()) {
       $options['row_class'] = array('default' => '');
+      $options['default_row_class'] = array('default' => TRUE, 'bool' => TRUE);
+      $options['row_class_special'] = array('default' => TRUE, 'bool' => TRUE);
     }
+    $options['uses_fields'] = array('default' => FALSE, 'bool' => TRUE);
 
     return $options;
   }
@@ -162,17 +192,16 @@ class views_plugin_style extends views_plugin {
   function options_form(&$form, &$form_state) {
     parent::options_form($form, $form_state);
     // Only fields-based views can handle grouping.  Style plugins can also exclude
-    // themselves from being groupable by setting their "use grouping" definiton
+    // themselves from being groupable by setting their "use grouping" definition
     // key to FALSE.
     // @TODO: Document "uses grouping" in docs.php when docs.php is written.
     if ($this->uses_fields() && $this->definition['uses grouping']) {
       $options = array('' => t('- None -'));
-      $field_labels = $this->display->handler->get_field_labels();
+      $field_labels = $this->display->handler->get_field_labels(TRUE);
       $options += $field_labels;
-
       // If there are no fields, we can't group on them.
       if (count($options) > 1) {
-        // This is for backward compability, when there was just a single select form.
+        // This is for backward compatibility, when there was just a single select form.
         if (is_string($this->options['grouping'])) {
           $grouping = $this->options['grouping'];
           $this->options['grouping'] = array();
@@ -227,6 +256,28 @@ class views_plugin_style extends views_plugin {
       if ($this->uses_fields()) {
         $form['row_class']['#description'] .= ' ' . t('You may use field tokens from as per the "Replacement patterns" used in "Rewrite the output of this field" for all fields.');
       }
+
+      $form['default_row_class'] = array(
+        '#title' => t('Add views row classes'),
+        '#description' => t('Add the default row classes like views-row-1 to the output. You can use this to quickly reduce the amount of markup the view provides by default, at the cost of making it more difficult to apply CSS.'),
+        '#type' => 'checkbox',
+        '#default_value' => $this->options['default_row_class'],
+      );
+      $form['row_class_special'] = array(
+        '#title' => t('Add striping (odd/even), first/last row classes'),
+        '#description' => t('Add css classes to the first and last line, as well as odd/even classes for striping.'),
+        '#type' => 'checkbox',
+        '#default_value' => $this->options['row_class_special'],
+      );
+    }
+
+    if (!$this->uses_fields() || !empty($this->options['uses_fields'])) {
+      $form['uses_fields'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Force using fields'),
+        '#description' => t('If neither the row nor the style plugin supports fields, this field allows to enable them, so you can for example use groupby.'),
+        '#default_value' => $this->options['uses_fields'],
+      );
     }
   }
 
@@ -378,7 +429,7 @@ class views_plugin_style extends views_plugin {
    *   @endcode
    */
   function render_grouping($records, $groupings = array(), $group_rendered = NULL) {
-    // This is for backward compability, when $groupings was a string containing
+    // This is for backward compatibility, when $groupings was a string containing
     // the ID of a single field.
     if (is_string($groupings)) {
       $rendered = $group_rendered === NULL ? TRUE : $group_rendered;
@@ -445,7 +496,7 @@ class views_plugin_style extends views_plugin {
       );
     }
 
-    // If this parameter isn't explicitely set modify the output to be fully
+    // If this parameter isn't explicitly set modify the output to be fully
     // backward compatible to code before Views 7.x-3.0-rc2.
     // @TODO Remove this as soon as possible e.g. October 2020
     if ($group_rendered === NULL) {

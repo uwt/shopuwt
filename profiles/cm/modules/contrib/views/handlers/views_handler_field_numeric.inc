@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * @file
+ * Definition of views_handler_field_numeric.
+ */
+
 /**
  * Render a field as a numeric value
  *
@@ -12,11 +18,11 @@ class views_handler_field_numeric extends views_handler_field {
   function option_definition() {
     $options = parent::option_definition();
 
-    $options['set_precision'] = array('default' => FALSE);
+    $options['set_precision'] = array('default' => FALSE, 'bool' => TRUE);
     $options['precision'] = array('default' => 0);
     $options['decimal'] = array('default' => '.', 'translatable' => TRUE);
     $options['separator'] = array('default' => ',', 'translatable' => TRUE);
-    $options['format_plural'] = array('default' => FALSE);
+    $options['format_plural'] = array('default' => FALSE, 'bool' => TRUE);
     $options['format_plural_singular'] = array('default' => '1');
     $options['format_plural_plural'] = array('default' => '@count');
     $options['prefix'] = array('default' => '', 'translatable' => TRUE);
@@ -101,6 +107,12 @@ class views_handler_field_numeric extends views_handler_field {
 
   function render($values) {
     $value = $this->get_value($values);
+
+    // Hiding should happen before rounding or adding prefix/suffix.
+    if ($this->options['hide_empty'] && empty($value) && ($value !== 0 || $this->options['empty_zero'])) {
+      return '';
+    }
+
     if (!empty($this->options['set_precision'])) {
       $value = number_format($value, $this->options['precision'], $this->options['decimal'], $this->options['separator']);
     }
@@ -112,11 +124,6 @@ class views_handler_field_numeric extends views_handler_field {
         // The substr may not be locale safe.
         $value .= $this->options['decimal'] . substr($remainder, 2);
       }
-    }
-
-    // Check to see if hiding should happen before adding prefix and suffix.
-    if ($this->options['hide_empty'] && empty($value) && ($value !== 0 || $this->options['empty_zero'])) {
-      return '';
     }
 
     // Should we format as a plural.
