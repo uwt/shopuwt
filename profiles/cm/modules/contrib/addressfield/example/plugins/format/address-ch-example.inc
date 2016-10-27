@@ -22,7 +22,6 @@ function addressfield_format_address_ch_generate(&$format, $address, $context = 
     $format['locality_block']['postal_code']['#ajax'] = array(
       'callback' => 'addressfield_standard_widget_refresh',
       'wrapper' => $format['#wrapper_id'],
-      'method' => 'replace',
     );
   }
   else {
@@ -3553,8 +3552,6 @@ function addressfield_form_ch_postal_code_validation($element, &$form_state, &$f
   if (!empty($element['#value']) && (isset($data[$element['#value']]))) {
     // Get the base #parents for this address form.
     $base_parents = array_slice($element['#parents'], 0, -1);
-    $base_array_parents = array_slice($element['#array_parents'], 0, -2);
-
     $city = $data[$element['#value']];
 
     // Set the new values in the form.
