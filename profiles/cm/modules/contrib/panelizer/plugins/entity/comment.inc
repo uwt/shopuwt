@@ -1,17 +1,16 @@
 <?php
 /**
  * @file
- * Definition of the taxonomy term plugin.
+ * Definition of the comment plugin.
  */
 
-if (module_exists('taxonomy')) {
+if (module_exists('comment')) {
   $plugin = array(
-    'handler' => 'PanelizerEntityTaxonomyTerm',
-    'entity path' => 'taxonomy/term/%taxonomy_term',
-    'uses page manager' => TRUE,
+    'handler' => 'PanelizerEntityComment',
+    'entity path' => 'comment/%comment',
+    'uses page manager' => FALSE,
     'hooks' => array(
       'menu' => TRUE,
-      'admin_paths' => TRUE,
       'permission' => TRUE,
       'panelizer_defaults' => TRUE,
       'default_page_manager_handlers' => TRUE,

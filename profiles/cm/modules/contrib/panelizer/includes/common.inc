@@ -22,12 +22,16 @@ function panelizer_settings_form($form, &$form_state) {
     );
   }
 
-  $form['no_blocks'] = array(
-    '#type' => 'checkbox',
-    '#default_value' => $panelizer->no_blocks,
-    '#title' => t('Disable Drupal blocks/regions'),
-    '#description' => t('Check this to have the panel disable sidebars displayed in the theme. Note that some themes support this setting better than others. If in doubt, try with stock themes to see.'),
-  );
+  // We only allow this setting on the "full page override" because it
+  // does not make sense in other modes.
+  if ($form_state['view_mode'] == 'page_manager') {
+    $form['no_blocks'] = array(
+      '#type' => 'checkbox',
+      '#default_value' => $panelizer->no_blocks,
+      '#title' => t('Disable Drupal blocks/regions'),
+      '#description' => t("Check this to have the display not show the theme's sidebars. Note that some themes support this setting better than others. If in doubt, try with stock themes to see."),
+    );
+  }
 
   ctools_include('plugins', 'panels');
   $pipelines = panels_get_renderer_pipelines();
@@ -56,18 +60,51 @@ function panelizer_settings_form($form, &$form_state) {
     );
   }
 
+  if ($form_state['view_mode'] != 'page_manager') {
+    $form['title_element'] = array(
+      '#type' => 'textfield',
+      '#default_value' => $panelizer->title_element,
+      '#title' => t('Title element'),
+      '#description' => t('The HTML element to use for the entity title. Typically this will be an H2.'),
+    );
+
+    $form['link_to_entity'] = array(
+      '#type' => 'checkbox',
+      '#default_value' => $panelizer->link_to_entity,
+      '#title' => t('Link title to entity'),
+      '#description' => t('If checked the title will be a link to the entity.'),
+    );
+
+    $form['css_class'] = array(
+      '#type' => 'textfield',
+      '#size' => 35,
+      '#default_value' => $panelizer->css_class,
+      '#title' => t('CSS class'),
+      '#description' => t('The CSS class to apply to this display. You may use context substitions here.'),
+    );
+  }
+  else {
+    $form['css_class'] = array(
+      '#type' => 'textfield',
+      '#size' => 35,
+      '#default_value' => $panelizer->css_class,
+      '#title' => t('Body class'),
+      '#description' => t('The CSS class to apply to the BODY tag. You may use context substitions here.'),
+    );
+  }
+
   $form['css_id'] = array(
     '#type' => 'textfield',
     '#size' => 35,
     '#default_value' => $panelizer->css_id,
     '#title' => t('CSS ID'),
-    '#description' => t('The CSS ID to apply to this panel'),
+    '#description' => t('The CSS ID to apply to this display.'),
   );
 
   $form['css'] = array(
     '#type' => 'textarea',
     '#title' => t('CSS code'),
-    '#description' => t('Enter well-formed CSS code here; this code will be embedded into the panel, and should only be used for minor adjustments; it is usually better to try to put CSS for the panel into the theme if possible. This CSS will be filtered for safety so some CSS may not work.'),
+    '#description' => t('Enter well-formed CSS code here; this code will be embedded into the display and should only be used for minor adjustments; it is usually better to try to put CSS for this display into the theme if possible. This CSS will be filtered for safety so some CSS may not work.'),
     '#default_value' => $panelizer->css,
   );
 
@@ -82,14 +119,6 @@ function panelizer_settings_form($form, &$form_state) {
     '#value' => t('Save'),
   );
 
-  if (!empty($form_state['reset button'])) {
-    $form['actions']['reset'] = array(
-      '#type' => 'submit',
-      '#value' => t('Reset to default'),
-      '#reset' => TRUE,
-   );
-  }
-
   return $form;
 }
 
@@ -98,10 +127,21 @@ function panelizer_settings_form($form, &$form_state) {
  */
 function panelizer_settings_form_submit(&$form, &$form_state) {
   $panelizer = $form_state['panelizer'];
-  $panelizer->no_blocks = $form_state['values']['no_blocks'];
+  if ($form_state['view_mode'] == 'page_manager') {
+    $panelizer->no_blocks = $form_state['values']['no_blocks'];
+  }
+  else {
+    $panelizer->title_element = $form_state['values']['title_element'];
+  }
+
+  $panelizer->css_class = $form_state['values']['css_class'];
   $panelizer->css = $form_state['values']['css'];
   $panelizer->css_id = $form_state['values']['css_id'];
   $panelizer->pipeline = $form_state['values']['pipeline'];
+  // Behind an if because this value does not always exist.
+  if (isset($form_state['values']['link_to_entity'])) {
+    $panelizer->link_to_entity = $form_state['values']['link_to_entity'];
+  }
   if (!empty($form_state['has title'])) {
     $panelizer->title = $form_state['values']['title'];
   }
@@ -122,12 +162,12 @@ function panelizer_add_revision_info_form(&$form, &$form_state) {
 
   $entity = $form_state['entity'];
 
-  list($use_revisions, $control_revisions) = $form_state['revision info'];
+  list($use_revisions, $control_revisions, $default_revision) = $form_state['revision info'];
 
   if ($use_revisions) {
     // @todo -- what if an entity uses some other flag to control revisioning?
     if (!isset($entity->revision)) {
-      $entity->revision = $use_revisions;
+      $entity->revision = $default_revision;
       $entity->log = '';
     }
 
@@ -162,12 +202,26 @@ function panelizer_add_revision_info_form(&$form, &$form_state) {
       $form['#submit'][] = $form_state['input']['form_id'] . '_submit';
     }
 
-    $form['#submit'][] = 'panelizer_add_revision_info_form_submit';
+    // The submit handler needs to go in a different location depending on
+    // what form this is.
+    $submit_handler = 'panelizer_add_revision_info_form_submit';
+    if (!empty($form['buttons']['submit']['#submit'])) {
+      $form['buttons']['submit']['#submit'][] = $submit_handler;
+    }
+    elseif (!empty($form['buttons']['return']['#submit'])) {
+      $form['buttons']['return']['#submit'][] = $submit_handler;
+    }
+    else {
+      $form['#submit'][] = $submit_handler;
+    }
   }
 }
 
+/**
+ * Form submission callback for panelizer_add_revision_info_form().
+ */
 function panelizer_add_revision_info_form_submit(&$form, &$form_state) {
-  $entity = $form_state['entity'];
+  $entity = &$form_state['entity'];
   if (!empty($form_state['use revisions'])) {
     $entity->revision = $form_state['values']['revision'];
     $entity->log = $form_state['values']['log'];
@@ -175,7 +229,7 @@ function panelizer_add_revision_info_form_submit(&$form, &$form_state) {
 }
 
 /**
- * Form to edit contexts that go with a panelizer panel.
+ * Form to edit contexts that go with a Panelizer display.
  */
 function panelizer_default_context_form($form, &$form_state) {
   ctools_include('context-admin');
@@ -245,7 +299,7 @@ function panelizer_default_context_form($form, &$form_state) {
 
 /**
  * Form used when an entity bundle is panelized but there is no default
- * panel. Entities are then individually panelized.
+ * display. Entities are then individually panelized.
  */
 function panelizer_panelize_entity_form($form, &$form_state) {
   $entity_type = $form_state['panelizer']->panelizer_type;
@@ -260,6 +314,30 @@ function panelizer_panelize_entity_form($form, &$form_state) {
     '#type' => 'submit',
     '#value' => t('Panelize it!'),
   );
+
+  return $form;
+}
+
+/**
+ * Form used when an entity is panelized and is being reset.
+ */
+function panelizer_reset_entity_form($form, &$form_state) {
+  $entity_type = $form_state['panelizer']->entity_type;
+  $entity_info = entity_get_info($entity_type);
+  $form = array();
+
+  // Build the confirmation form.
+  $form = confirm_form(
+    $form,
+    t('Are you sure you want to reset the panelizer status for this %entity?', array('%entity' => $entity_info['label'])),
+    dirname(dirname($_GET['q'])),
+    t('This %entity will be reset to the default panelizer state, discarding any modifications made to it. This action cannot be undone.', array('%entity' => $entity_info['label'])),
+    t('Reset'),
+    t('Cancel'),
+    'panelizer_reset_entity_confirm');
+
+  // Append the revision form.
+  panelizer_add_revision_info_form($form, $form_state);
 
   return $form;
 }
@@ -390,7 +468,7 @@ function panelizer_edit_content_form($form, &$form_state) {
 
   $form_state['display'] = &$cache->display;
   $form_state['content_types'] = $cache->content_types;
-  $form_state['display_title'] = !empty($cache->display_title);
+  $form_state['display_title'] = TRUE;
 
   $form = panels_edit_display_form($form, $form_state);
 

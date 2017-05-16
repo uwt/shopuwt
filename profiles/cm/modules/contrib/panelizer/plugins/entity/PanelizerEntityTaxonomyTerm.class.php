@@ -10,6 +10,17 @@
  * Handles term specific functionality for Panelizer.
  */
 class PanelizerEntityTaxonomyTerm extends PanelizerEntityDefault {
+  public $entity_admin_root = 'admin/structure/taxonomy/%';
+  public $entity_admin_bundle = 3;
+  public $views_table = 'taxonomy_term_data';
+  public $uses_page_manager = TRUE;
+
+  public function init($plugin) {
+    if (module_exists('taxonomy_revision')) {
+      $this->supports_revisions = TRUE;
+    }
+    parent::init($plugin);
+  }
 
   public function entity_access($op, $entity) {
     // This must be implemented by the extending class.
@@ -31,38 +42,6 @@ class PanelizerEntityTaxonomyTerm extends PanelizerEntityDefault {
     taxonomy_term_save($entity);
   }
 
-  /**
-   * Implement the save function for the entity.
-   */
-  public function entity_allows_revisions($entity) {
-    return array(FALSE, FALSE);
-
-  }
-
-  public function settings_form(&$form, &$form_state) {
-    parent::settings_form($form, $form_state);
-
-    $warn = FALSE;
-    foreach ($this->plugin['bundles'] as $info) {
-      if (!empty($info['status'])) {
-        $warn = TRUE;
-        break;
-      }
-    }
-
-    if ($warn) {
-      $task = page_manager_get_task('term_view');
-      if (!empty($task['disabled'])) {
-        drupal_set_message('The taxonomy term template page is currently not enabled in page manager. You must enable this for Panelizer to be able to panelize taxonomy terms.', 'warning');
-      }
-
-      $handler = page_manager_load_task_handler($task, '', 'term_view_panelizer');
-      if (!empty($handler->disabled)) {
-        drupal_set_message('The panelizer variant on the taxonomy term template page is currently not enabled in page manager. You must enable this for Panelizer to be able to panelize taxonomy terms.', 'warning');
-      }
-    }
-  }
-
   public function entity_identifier($entity) {
     return t('This taxonomy term');
   }
@@ -71,10 +50,10 @@ class PanelizerEntityTaxonomyTerm extends PanelizerEntityDefault {
     return t('Taxonomy vocabulary');
   }
 
-  function get_default_display() {
+  function get_default_display($bundle, $view_mode) {
     // For now we just go with the empty display.
     // @todo come up with a better default display.
-    return parent::get_default_display();
+    return parent::get_default_display($bundle, $view_mode);
   }
 
   /**
@@ -102,6 +81,58 @@ class PanelizerEntityTaxonomyTerm extends PanelizerEntityDefault {
     $handlers['term_view_panelizer'] = $handler;
 
     return $handlers;
+  }
+
+  /**
+   * Implements a delegated hook_form_alter.
+   *
+   * We want to add Panelizer settings for the bundle to the node type form.
+   */
+  public function hook_form_alter(&$form, &$form_state, $form_id) {
+    if ($form_id == 'taxonomy_form_vocabulary') {
+      if (isset($form['#vocabulary'])) {
+        $bundle = $form['#vocabulary']->machine_name;
+        $this->add_bundle_setting_form($form, $form_state, $bundle, array('machine_name'));
+      }
+    }
+  }
+
+  /**
+   * Fetch the entity out of a build for hook_entity_view.
+   *
+   * @param $build
+   *   The render array that contains the entity.
+   */
+  public function get_entity_view_entity($build) {
+    $element = '#term';
+    if (isset($build[$element])) {
+      return $build[$element];
+    }
+  }
+
+  /**
+   * Obtain the machine name of the Page Manager task.
+   *
+   * The Page Manager task for the taxonomy_term entity is "term_view", and not
+   * the expected "taxonomy_term_view".
+   */
+  public function get_page_manager_task_name() {
+    if (empty($this->plugin['uses page manager'])) {
+      return FALSE;
+    }
+    else {
+      return 'term_view';
+    }
+  }
+
+  /**
+   * Identify whether page manager is enabled for this entity type.
+   *
+   * Need to override this as Page Manager uses a different string for taxonomy
+   * terms than other entities.
+   */
+  public function is_page_manager_enabled() {
+    return variable_get('page_manager_term_view_disabled', TRUE);
   }
 
 }

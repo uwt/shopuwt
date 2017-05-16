@@ -10,9 +10,10 @@
  * Handles node specific functionality for Panelizer.
  */
 class PanelizerEntityNode extends PanelizerEntityDefault {
-  /**
-   * True if the entity supports revisions.
-   */
+  public $entity_admin_root = 'admin/structure/types/manage/%panelizer_node_type';
+  public $entity_admin_bundle = 4;
+  public $views_table = 'node';
+  public $uses_page_manager = TRUE;
   public $supports_revisions = TRUE;
 
   public function entity_access($op, $entity) {
@@ -36,7 +37,7 @@ class PanelizerEntityNode extends PanelizerEntityDefault {
   }
 
   /**
-   * Implement the save function for the entity.
+   * Determine if the entity allows revisions.
    */
   public function entity_allows_revisions($entity) {
     $retval = array();
@@ -44,133 +45,65 @@ class PanelizerEntityNode extends PanelizerEntityDefault {
     list($entity_id, $revision_id, $bundle) = entity_extract_ids($this->entity_type, $entity);
 
     $node_options = variable_get('node_options_' . $bundle, array('status', 'promote'));
-    $retval[0] = in_array('revision', $node_options);
+
+    // Whether or not the entity supports revisions.
+    $retval[0] = TRUE;
+
+    // Whether or not the user can control if a revision is created.
     $retval[1] = user_access('administer nodes');
+
+    // Whether or not the revision is created by default.
+    $retval[2] = in_array('revision', $node_options);
 
     return $retval;
   }
 
-  public function settings_form(&$form, &$form_state) {
-    parent::settings_form($form, $form_state);
+  /**
+   * {@inheritdoc}
+   */
+  function get_default_display($bundle, $view_mode) {
+    $display = parent::get_default_display($bundle, $view_mode);
+    // Add the node title to the display since we can't get that automatically.
+    $display->title = '%node:title';
 
-    $warn = FALSE;
-    foreach ($this->plugin['bundles'] as $info) {
-      if (!empty($info['status'])) {
-        $warn = TRUE;
-        break;
+    // Add the node links, they probably would like these.
+    $pane = panels_new_pane('node_links', 'node_links', TRUE);
+    $pane->css['css_class'] = 'link-wrapper';
+    $pane->configuration['build_mode'] = $view_mode;
+    $pane->configuration['context'] = 'panelizer';
+
+    // @todo -- submitted by does not exist as a pane! That's v. sad.
+    $display->add_pane($pane, 'center');
+
+    unset($pane);
+
+    // If the content type is enabled for use with Webform, add the custom
+    // submission pane.
+    if (module_exists('webform')) {
+      if ($view_mode == 'page_manager') {
+        if (variable_get('webform_node_' . $bundle)) {
+          $pane = panels_new_pane('entity_field_extra', 'node:webform', TRUE);
+          $pane->configuration['context'] = 'panelizer';
+          $pane->configuration['view_mode'] = 'full';
+          $display->add_pane($pane, 'center');
+          unset($pane);
+        }
       }
     }
 
-    if ($warn) {
-      $task = page_manager_get_task('node_view');
-      if (!empty($task['disabled'])) {
-        drupal_set_message('The node template page is currently not enabled in page manager. You must enable this for Panelizer to be able to panelize nodes.', 'warning');
-      }
-
-      $handler = page_manager_load_task_handler($task, '', 'node_view_panelizer');
-      if (!empty($handler->disabled)) {
-        drupal_set_message('The panelizer variant on the node template page is currently not enabled in page manager. You must enable this for Panelizer to be able to panelize nodes.', 'warning');
+    // Add a custom pane for the book navigation block for the Page Manager
+    // display.
+    if (module_exists('book')) {
+      if ($view_mode == 'page_manager') {
+        $pane = panels_new_pane('node_book_nav', 'node_book_nav', TRUE);
+        $pane->configuration['context'] = 'panelizer';
+        $display->add_pane($pane, 'center');
+        unset($pane);
       }
     }
-  }
-
-  function get_default_display() {
-    $display = new panels_display;
-    $display->layout = 'flexible';
-    $display->layout_settings = array();
-    $display->panel_settings = array(
-      'style_settings' => array(
-        'default' => NULL,
-        'center' => NULL,
-      ),
-    );
-    $display->cache = array();
-    $display->title = '';
-    $display->content = array();
-    $display->panels = array();
-    $pane = new stdClass;
-    $pane->pid = 'new-1';
-    $pane->panel = 'center';
-    $pane->type = 'node_content';
-    $pane->subtype = 'node_content';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'links' => 1,
-      'page' => 1,
-      'no_extras' => 0,
-      'override_title' => 0,
-      'override_title_text' => '',
-      'identifier' => '',
-      'link' => 0,
-      'leave_node_title' => 0,
-      'context' => 'panelizer',
-      'build_mode' => 'full',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $display->content['new-1'] = $pane;
-    if (module_exists('comment')) {
-      $display->panels['center'][0] = 'new-1';
-      $pane = new stdClass;
-      $pane->pid = 'new-2';
-      $pane->panel = 'center';
-      $pane->type = 'node_comments';
-      $pane->subtype = 'node_comments';
-      $pane->shown = TRUE;
-      $pane->access = array();
-      $pane->configuration = array(
-        'mode' => '4',
-        'order' => '2',
-        'comments_per_page' => '50',
-        'context' => 'panelizer',
-        'override_title' => 0,
-        'override_title_text' => '',
-      );
-      $pane->cache = array();
-      $pane->style = array(
-        'settings' => NULL,
-      );
-      $pane->css = array();
-      $pane->extras = array();
-      $pane->position = 1;
-      $display->content['new-2'] = $pane;
-      $display->panels['center'][1] = 'new-2';
-      $pane = new stdClass;
-      $pane->pid = 'new-3';
-      $pane->panel = 'center';
-      $pane->type = 'node_comment_form';
-      $pane->subtype = 'node_comment_form';
-      $pane->shown = TRUE;
-      $pane->access = array();
-      $pane->configuration = array(
-        'anon_links' => 1,
-        'context' => 'panelizer',
-        'override_title' => 0,
-        'override_title_text' => '',
-      );
-      $pane->cache = array();
-      $pane->style = array(
-        'settings' => NULL,
-      );
-      $pane->css = array();
-      $pane->extras = array();
-      $pane->position = 2;
-      $display->content['new-3'] = $pane;
-    }
-
-    $display->panels['center'][2] = 'new-3';
-    $display->hide_title = PANELS_TITLE_FIXED;
-    $display->title_pane = 'new-1';
 
     return $display;
   }
-
 
   /**
    * Implements a delegated hook_page_manager_handlers().
@@ -197,4 +130,108 @@ class PanelizerEntityNode extends PanelizerEntityDefault {
     return $handlers;
   }
 
+  /**
+   * Implements a delegated hook_form_alter.
+   *
+   * We want to add Panelizer settings for the bundle to the node type form.
+   */
+  public function hook_form_alter(&$form, &$form_state, $form_id) {
+    if ($form_id == 'node_type_form') {
+      if (isset($form['#node_type'])) {
+        $bundle = $form['#node_type']->type;
+        $this->add_bundle_setting_form($form, $form_state, $bundle, array('type'));
+      }
+    }
+  }
+
+  public function hook_page_alter(&$page) {
+    // Add an extra "Panelizer" action on the content types admin page.
+    if ($_GET['q'] == 'admin/structure/types') {
+      // This only works with some themes.
+      if (!empty($page['content']['system_main']['node_table'])) {
+        // Shortcut.
+        $table = &$page['content']['system_main']['node_table'];
+
+        // Operations column should always be the last column in header.
+        // Increase its colspan by one to include possible panelizer link.
+        $operationsCol = end($table['#header']);
+        if (!empty($operationsCol['colspan'])) {
+          $operationsColKey = key($table['#header']);
+          $table['#header'][$operationsColKey]['colspan']++;
+        }
+
+        // Since we can't tell what row a type is for, but we know that they
+        // were generated in this order, go through the original types list.
+        $types = node_type_get_types();
+        $names = node_type_get_names();
+        $row_index = 0;
+        foreach ($names as $bundle => $name) {
+          $type = $types[$bundle];
+          if (node_hook($type->type, 'form')) {
+            $type_url_str = str_replace('_', '-', $type->type);
+            if ($this->is_panelized($bundle) && panelizer_administer_entity_bundle($this, $bundle)) {
+              $table['#rows'][$row_index][] = array('data' => l(t('panelizer'), 'admin/structure/types/manage/' . $type_url_str . '/panelizer'));
+            }
+            else {
+              $table['#rows'][$row_index][] = array('data' => '');
+            }
+            // Update row index for next pass.
+            $row_index++;
+          }
+        }
+      }
+    }
+  }
+
+  public function preprocess_panelizer_view_mode(&$vars, $entity, $element, $panelizer, $info) {
+    parent::preprocess_panelizer_view_mode($vars, $entity, $element, $panelizer, $info);
+
+    if (!empty($entity->promote)) {
+      $vars['classes_array'][] = 'node-promoted';
+    }
+    if (!empty($entity->sticky)) {
+      $vars['classes_array'][] = 'node-sticky';
+    }
+    if (empty($entity->status)) {
+      $vars['classes_array'][] = 'node-unpublished';
+    }
+  }
+
+  function render_entity($entity, $view_mode, $langcode = NULL, $args = array(), $address = NULL, $extra_contexts = array()) {
+    $info = parent::render_entity($entity, $view_mode, $langcode, $args, $address, $extra_contexts);
+    if (!empty($entity->promote)) {
+      $info['classes_array'][] = 'node-promoted';
+    }
+    if (!empty($entity->sticky)) {
+      $info['classes_array'][] = 'node-sticky';
+    }
+    if (empty($entity->status)) {
+      $info['classes_array'][] = 'node-unpublished';
+    }
+    return $info;
+  }
+
+  /**
+   * Implements hook_views_plugins_alter().
+   */
+  function hook_views_plugins_alter(&$plugins) {
+    // While it would be nice to generalize this plugin, there is no generic
+    // entity view. This means that to generalize it we'll still need to have
+    // each entity know how to do the view individually.
+    // @todo make this happen.
+    $path = drupal_get_path('module', 'panelizer') . '/plugins/views';
+    $plugins['row']['panelizer_node_view'] = array(
+      'title' => t('Panelizer display'),
+      'help' => t('Render entities using the panels display for any that have been panelized.'),
+      'handler' => 'panelizer_plugin_row_panelizer_node_view',
+      'parent' => 'node',
+      'base' => array('node'),
+      'path' => $path,
+      'uses options' => TRUE,
+      'module' => 'panelizer',
+      'type' => 'normal',
+      'register theme' => FALSE,
+      'name' => 'panelizer_node_view',
+    );
+  }
 }
