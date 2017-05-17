@@ -177,7 +177,7 @@ function omega_alpha_process_region(&$vars) {
         $vars['site_name_hidden'] = $theme->page['site_name_hidden'];
         $vars['site_slogan_hidden'] = $theme->page['site_slogan_hidden'];
         $vars['logo'] = $theme->page['logo'];
-        $vars['logo_img'] = $vars['logo'] ? '<img src="' . $vars['logo'] . '" alt="' . check_plain($vars['site_name']) . '" id="logo" />' : '';
+        $vars['logo_img'] = $vars['logo'] ? '<img src="' . $vars['logo'] . '" alt="Link to UWTDowntown homepage" id="logo" />' : '';
         $vars['linked_logo_img'] = $vars['logo'] ? l($vars['logo_img'], '<front>', array('attributes' => array('rel' => 'home', 'title' => check_plain($vars['site_name'])), 'html' => TRUE)) : '';
         break;
     }

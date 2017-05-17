@@ -12,7 +12,15 @@ h1, h2, h3, h4, h5, h6 {
   font-family: Helvetica, Arial, sans-serif;
 }
 a,a:link,a:active,a:visited {
-  text-decoration:none;  
+  text-decoration: underline;
+}
+
+html :focus{
+    outline: 2px solid white;
+  }
+
+#skip-link a:focus{
+  outline: 2px solid white;
 }
 
 /* Tables */
@@ -204,7 +212,7 @@ width:49%;
 }
 
 #zone-postscript-wrapper {
-  background-color:rgba(57, 39, 91, 0.8);
+  background-color:rgb(57, 39, 91);
   color:white;
 }
 .page-taxonomy-term #page-title {
