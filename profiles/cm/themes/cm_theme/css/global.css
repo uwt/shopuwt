@@ -19,6 +19,13 @@ html :focus{
     outline: 2px solid white;
   }
 
+.offscreen,
+.front h1{
+  position: absolute;
+  top: -10000px;
+  left: -10000px;
+}
+
 #skip-link a:focus{
   outline: 2px solid white;
 }
