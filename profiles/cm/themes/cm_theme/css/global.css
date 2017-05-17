@@ -109,14 +109,14 @@ img {
   background-color:rgba(57, 39, 91, 0.8);
 }
 #zone-menu-wrapper {
-  background-color:#DBB300;
+  background-color:#85754d;
   /*padding-top:.55em;*/
 }
 #zone-menu-wrapper ul {
   height:100%;
 }
 #zone-menu-wrapper ul li {
-  background-color:#DBB300;
+  background-color: transparent;
 }
 
 #mobile-menu-link {
